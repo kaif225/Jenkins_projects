@@ -1,0 +1,63 @@
+pipeline {
+    agent any
+    environment{
+        MY_ENV_VAR = 'sample'
+    }
+    stages {
+        stage('checkout') {
+            steps{
+                script{
+                    // clone the git replository master branch
+                    def gitRepourl = 'https://github.com/anshulc55/Jenkins_Upgradev3.git'
+                    
+                    checkout ([$class: 'GitSCM',
+                        branches: [[name: '*/master']],
+                        userRemoteconfigs: [[url: gitRepourl ]],
+                        extensions: [[$class: 'CleanBeforeCheckout'], [$class: 'Cloneoption', noTags: false, shallow: true,depth:1]]
+                        
+                    ])
+                    
+                }
+                
+                
+            }
+        }
+        stage('Build') {
+            steps {
+                // Build your application here (eg., compile)
+                sh 'echo "In build Steps"'
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                // Deploy your application to  target environment
+                sh 'echo "you are in test Step"'
+            }
+        }
+    
+        stage('Deploy') {
+            steps {
+                // You are in deploy steps
+                sh 'echo "In Deploy steps"'
+            }
+        }
+        
+    }
+    
+    post {
+        
+        success {
+            sh 'echo "Pipeline succeeded!"'
+        }
+    
+        failure {
+            // Actions to perform when the pipeline fails
+            echo 'Pipeline Failed'
+            
+        }
+    }
+    
+
+
+
