@@ -12,7 +12,7 @@ pipeline {
                     
                     checkout ([$class: 'GitSCM',
                         branches: [[name: '*/master']],
-                        userRemoteconfigs: [[url: gitRepourl ]],
+                        userRemoteconfig: [[url: gitRepourl ]],
                         extensions: [[$class: 'CleanBeforeCheckout'], [$class: 'Cloneoption', noTags: false, shallow: true,depth:1]]
                         
                     ])
